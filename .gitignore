@@ -1,0 +1,8 @@
+src/fort*
+src/*.o
+src/*.*~
+src/*~
+src/*.dat
+src/*.mod
+doc/*
+!doc/readme.tex

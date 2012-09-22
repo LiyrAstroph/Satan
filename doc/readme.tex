@@ -1,0 +1,535 @@
+\documentclass[oneside]{book}
+%\documentclass[onecolumn]{emulateapj-rtx4}
+\usepackage{natbib}
+\usepackage{color}
+\usepackage{apjfonts}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\geometry{left=1.5cm, right=1.5cm, top=2.5cm, bottom=2.0cm}
+
+\def\rd{{\rm d}}
+\def\mnras{{MNRAS}}
+\def\apj{{ApJ}}
+\def\apjl{{ApJ}}
+\def\aap{{A\&A}}
+\begin{document}
+
+\title{Structure and Emergent Spectrum of Slim Accretion Disks With Hot Coronae}
+\author{Yan-Rong Li\\
+liyanrong@mail.ihep.ac.cn\\
+Institute of High Energy Physics}
+\date{}
+\maketitle
+
+\chapter{Basic Equations}
+To mimic the general relativistic effects, we adopt the pseudo-Newtonian potential
+\begin{equation}
+\Phi(R)=-\frac{GM_\bullet}{R-2R_{\rm g}},
+\end{equation}
+where $R_{\rm g}=GM_\bullet/c^2$ is the gravitational radius. The inner edges of slim disks locate at 
+$R_{\rm in}=6R_{\rm g}$, where the usual ``torque-free'' condition is enforced. The vertical structures of slim disks
+and hot coronae are in hydrodynamical equilibrium and the vertical temperature profile is isothermal.
+The geometry of the coronae is assumed to be parallel-plane above the disk.
+\subsection{Slim Accretion Disks}
+The governing equations for mass, angular momentum, radial velocity, and energy are as follows
+(\citealt{Wang2003}).
+\begin{itemize}
+ \item Mass
+ %
+\begin{equation}
+\dot M=-2\pi R V_{\rm R}\Sigma,
+\label{equ_disk_mass}
+\end{equation}
+%
+where $\dot M$ is the mass accretion rate, $V_R$ is the radial velocity, and $\Sigma$ is the surface density.
+\item Angular momentum
+%
+\begin{equation}
+\dot M(\ell-\ell_{\rm in})=-2\pi R^2 T_{r\phi},
+\label{equ_disk_am}
+\end{equation}
+where $\ell$ ($\ell_{\rm in}$) is the specific angular momentum (at the inner edge) and $T_{r\phi}$
+is the height-integrated shear tensor.
+\item Radial velocity
+%
+\begin{equation}
+V_R\frac{\rd V_R}{\rd R}+\frac{1}{\Sigma}\frac{\rd W}{\rd R}
+=\frac{\ell^2-\ell_{\rm K}^2}{R^3}-\frac{W}{\Sigma}\frac{\rd\ln\Omega_{\rm K}}{\rd R},
+\label{equ_disk_vel}
+\end{equation}
+where $W$ is the height-integrated pressure, $\ell_{\rm K}=R^2\Omega_{\rm K}$, and $\Omega_{\rm K}$
+is the Kerplerian angular velocity.
+\item Energy
+%
+\begin{equation}
+Q_{\rm vis}^+=Q_{\rm rad}^-+Q_{\rm adv}^-+Q_{\rm cor}^+ - \varepsilon(1-a_r)Q_{\rm cor}^+,
+\label{equ_disk_energy}
+\end{equation}
+where $\varepsilon$ is the fraction of radiation that are intercepted by the disks, $a_r$ is the reflection albedo,
+$Q_{\rm vis}^+$ is the viscous heating, $Q_{\rm rad}^-$ is the radiative cooling, 
+$Q_{\rm adv}^-$ is the advective cooling, and $Q_{\rm cor}^+$ is the energy 
+dissipated into the hot coronae. 
+\end{itemize}
+Basically, we write down the expresses for the related terms in the energy equation as
+\begin{gather}
+Q_{\rm vis}^+=RT_{r\phi}\frac{\rd\Omega}{\rd r},\\
+Q_{\rm rad}^-=\frac{8acT_0^4}{3\kappa\rho_0H_d},\\
+Q_{\rm adv}^-=\frac{\dot M}{4\pi R^2}\frac{W}{\Sigma}\xi,\\
+Q_{\rm cor}^+=\frac{B^2}{8\pi}v_p,
+\end{gather}
+where 
+\begin{equation}
+\kappa=0.40+0.64\times10^{23}\rho_0 T_0^{-7/2} g^{-1}{\rm cm}^2,
+\end{equation}
+and 
+\begin{equation}
+\xi=(4-3\beta)\frac{\rd\ln\Sigma}{\rd\ln R}-\left(12-\frac{21}{2}\beta\right)\frac{\rd\ln T}{\rd\ln R}-
+(4-3\beta)\frac{\rd\ln H_d}{\rd\ln R},
+\end{equation}
+with $\beta=P_g/(P_g+P_r)$.
+The viscous stress tensor $T_{r\phi}=-\alpha_{\rm eff}W$ and $W=\int P_t d z$ is the height-integrated pressure.
+The total pressure is
+\begin{equation}
+ P_t=P_g+P_r=\frac{\rho_0 k T_0}{\bar\mu m_H} + \frac{1}{3}aT_0^4.
+\end{equation}
+The effective coefficient $\alpha_{\rm eff}=\alpha(P_g/P_t)^\mu$. The magnetic pressure is (\citealt{Merloni2003})
+\begin{equation}
+P_m=\alpha_0\sqrt{P_gP_t},
+\end{equation}
+where $\alpha_0$ is order of unity. The velocity of the magnetic flux transported vertially in the disk is in proportional
+to the Alfven velocity $v_p=bv_A$ with $v_A=B/\sqrt{4\pi\rho}$ and $b\approx1$.
+The fraction of the viscous heating dissipated to the coronae is
+\begin{equation}
+f(R)=\frac{Q_{\rm cor}^+}{Q_{\rm vis}^+}.
+\end{equation}
+The effective temperature of the disk is
+\begin{equation}
+Q_{\rm rad}^-=2F_d^-=2\sigma T_{\rm eff}^4.
+\end{equation}
+
+(There are {\color{blue} five} variables to be determined: 
+{\color{blue}$\Sigma$, $V_R$, $W$, $\Omega$ and $H_d$}.)
+
+
+\subsection{Hot Coronae}
+For hot coronae, the energy equations for ions and electrons are as follows.
+\begin{itemize}
+ \item Ions
+ \begin{gather}
+Q_{\rm cor}^+-\lambda Q_{\rm cor}^+=Q_{ie}^-.
+\label{equ_cor_ions}
+\end{gather}
+ \item Electrons
+ \begin{equation}
+  Q_{ie}^-+\lambda Q_{\rm cor}^+=2F_c^-.
+  \label{equ_cor_electrons}
+ \end{equation}
+\end{itemize}
+where $\lambda$ is the fraction of energy that directly heats the electrons, $Q_{ie}^-$ is 
+energy transfer between ions and electrons via the Coulomb interactions.
+and $F_c^-$ is the cooling rate of the coronae including the synchrotron, bremstrahlung emssions and
+the Compton scattering.
+The scale height of the hot coronae is
+\begin{equation}
+P_c=\rho_c\Omega_K^2H_c^2,
+\label{equ_cor_height}
+\end{equation}
+where $P_c=P_{c, g}+P_{c, m}$ is the total pressure of the coronae.  The magnetic pressure is assumed to a fraction
+of the totoal pressure $P_{c, m}=B_c^2/8\pi=\beta_c P_c$, and 
+\begin{equation}
+P_{c, g}=\frac{\rho_ckT_i}{\mu_i m_H}+\frac{\rho_ckT_e}{\mu_e m_H}.
+\end{equation}
+
+(There are {\color{blue} four} variables to be determined: {\color{blue}$T_i$, $T_e$, $n$, and $H_c$}.)
+
+\section{Disk-Coronae Transition}
+\subsection{Model I: Pressure Balance}
+There is pressure balance at the base of the coronae. Therefore, the height of the disk satisfies
+\begin{equation}
+\Sigma H_d^2\Omega_{\rm K}^2=W+P_mH_d-P_{\rm base}H_d.
+\label{equ_disk_height}
+\end{equation}
+where $P_{\rm base}$ is the pressure at the base of the coronae.
+Following \cite{Zycki1995}, the tansition from the disk to the coronae can be qualitatively determined by 
+requirement that the ionization parameter
+\begin{equation}
+\Xi\equiv \frac{F_d}{cP_{\rm g}}=\Xi_{\rm min},
+\end{equation}
+where $F_d$ is the radiation flux from the disk and {\color{blue}$\Xi_{\rm min}=0.05$}.
+Similarly, at the base of the coronae, there should be
+\begin{equation}
+P_c=P_{\rm base}.
+\label{equ_cor_base}
+\end{equation}
+
+The equation sets for the disk and the coronae are now closed.
+
+\subsection{Model II: Evaporation and Thermal Conduction}
+The height of the disk is given by neglecting the pressure of the coronae
+\begin{equation}
+\Sigma H_d^2\Omega_{\rm K}^2=W.
+\end{equation}
+For the coronae, at its interface, there should be energy balance between the 
+evaporation and thermal conduction (\citealt{Liu2002})
+\begin{equation}
+\frac{\kappa_0 T^{7/2}}{l}=\frac{\gamma}{\gamma-1}nkT\left(\frac{kT}{m_H}\right)^{1/2},
+\end{equation}
+where {\color{blue}$l\approx10R_S$} is the characteristic length of the magnetic loops in the coronae.
+
+The equation sets for the disk and the coronae are now closed.
+
+\section{Radiation Meachnism}
+The energy transfer between the ions and electrons $Q_{\rm ie}^-$ is given by (\citealt{Narayan1995})
+\begin{equation}
+Q_{\rm ie}^-=H_c\times1.25\frac{3}{2}\frac{m_e}{m_p}
+n_en_i\sigma_T c\frac{kT_i-kT_e}{K_2(1/\theta_e)K_2(1/\theta_i)}\ln\Lambda
+\left[\frac{2(\theta_e+\theta_i)^2+1}{\theta_i+\theta_e}K_1\left(\frac{\theta_e+\theta_i}{\theta_e\theta_i}\right)
++2K_0\left(\frac{\theta_e+\theta_i}{\theta_e\theta_i}\right)\right]~~{\rm erg~s^{-1}~cm^{-2}}.
+\end{equation}
+The synchrotron emission is calculated by $F_{\rm syn}^-=H_c \chi_{syn}$
+\begin{eqnarray}
+\chi_{syn}=4.43\times10^{-30}\frac{4\pi n_e\nu}{K_2(1/\theta_e)}
+I\left(\frac{4\pi m_ec\nu}{3eB\theta_e^2}\right),
+\end{eqnarray}
+where
+\begin{eqnarray}
+I(x)=\frac{4.0505}{x^{1/6}}\left(1+\frac{0.4}{x^{1/4}}+\frac{0.5316}{x^{1/2}}\right)
+\exp(-1.8899x^{1/3}).
+\end{eqnarray}
+The bremstralung emission is calculated  by $F_{\rm br}^-=H_c \chi_{br}$ with
+\begin{eqnarray}
+\chi_{br}=q_{br}^{-}\bar G\exp\left(\frac{h\nu}{kT_e}\right),
+\end{eqnarray}
+where $\bar G$ is the Gaunt factor, $q_{br}^{-}$ is the bremsstrahlung emission per unit volume
+, which reads
+\begin{eqnarray}
+q_{br}^{-}=1.48\times10^{-22}n_e^2F(\theta),
+\end{eqnarray}
+and 
+\begin{eqnarray}
+F(\theta)&&=4\left(\frac{2\theta_e}{\pi^3}\right)^{1/2}(1+1.781\theta_e^{1.34})
++1.73\theta_e^{3/2}(1+1.1\theta_e+\theta_e^2-1.25\theta_e^{5/2})\qquad\theta_e<1,\nonumber\\
+&&=\left(\frac{9\theta_e}{2\pi}\right)[\ln(0.48+1.123\theta_e)+1.5]
++2.30\theta_e(\ln1.123\theta_e+1.28)\qquad\theta_e>1.
+\end{eqnarray}
+The Gaunt factor is given by (\citealt{Rybicki1979})
+\begin{equation}
+\bar G=\frac{h}{kT_e}\left(\frac{3}{\pi}\frac{kT_e}{h\nu}\right)^{1/2}\qquad \frac{kT_e}{h\nu}<1,
+\end{equation}
+\begin{equation}
+\bar G=\frac{h}{kT_e}\frac{\sqrt{3}}{\pi}\ln\left(\frac{4}{\xi}\frac{kT_e}{h\nu}\right)^{1/2}
+\qquad \frac{kT_e}{h\nu}>1.
+\end{equation}
+We treat the Compton scattering as follows.
+The energy enhancement factor $\eta$ is
+\begin{equation}
+ \eta=\exp[s(A-1)][1-P(j_m+1,As)]+\eta_{max}P(j_m+1,s),
+\end{equation}
+where $P$ is the incomplete gamma function and
+\begin{equation}
+ A=1+4\theta_e+16\theta_e^2,~~~~~s=\tau_{es}+\tau_{es}^2,
+\end{equation}
+and
+\begin{equation}
+ \eta_{max}=\frac{3kT_e}{h\nu},~~~~~~~~~~j_m=\frac{\ln\eta_{max}}{\ln A},
+~~~~~~~~~~\tau_{es}=n_e\sigma_TH_c.
+\end{equation}
+With the energy enhancement factor $\eta$, the local radiative cooling rate $Q_{rad}^{-}$ is given by
+\begin{equation}
+F_{c}^{-}=2\int d\nu \left[\eta (F_{\rm br, \nu} + F_{\rm syn, \nu}) + (\eta-1) F_{d, \nu}\right],
+\end{equation}
+where $F_\nu$ includes the local synchrotron and bremstrahlung emission and the flux from the accretion disk.
+\section{Emergent Spectrum: Calculations}
+The emergent spectrum from slim disks and hot coronae is calculated as
+\begin{equation}
+F_\nu=F_{d,\nu} +(1-\varepsilon) \left(F_{\rm syn, \nu} + F_{\rm br, \nu} + F_{Comp, \nu}\right),
+\end{equation}
+where $\varepsilon$ is the fraction of emissions that are intercepted by the disks. 
+The spectra from Compton scatterings in the coronae is treated according to \cite{Coppi1990}.
+
+\chapter{Derive the Equations}
+The basic equations are constructed in the cyclindrical coordinates $(R, \phi, z)$.
+The mass conservation gives
+\begin{equation}
+\frac{\partial (R\rho v_r)}{R\partial R}+\frac{\partial (\rho v_z)}{\partial z}=0.
+\end{equation}
+The radial component of  the momentum equation reads
+\begin{equation}
+\frac{\partial (R\rho v_r^2)}{R\partial R}+\frac{\partial(\rho v_r v_z)}{\partial z}-\frac{\rho v_\phi^2}{R}
+=-\frac{\partial P}{\partial R}-\rho\frac{\partial\Phi}{\partial R}.
+\end{equation}
+The azimuthal component of the momentum equation is
+\begin{equation}
+\frac{\partial(R^2\rho v_rv_\phi)}{R\partial R}+\frac{\partial (\rho v_\phi v_z)}{\partial z}
+=\frac{\partial (R^2 \tau_{r\phi})}{R\partial R}.
+\end{equation}
+The energy equation is 
+\begin{equation}
+ \rho T\left(v_r\frac{\partial s}{\partial R}+v_z\frac{\partial s}{\partial z}\right)
+ =t_{r\phi} r\frac{\rd\Omega}{\rd R}-q_{\rm rad}^-.
+\end{equation}
+The hydrostatic balance in the vertical direction is
+\begin{equation}
+\frac{\partial P}{\partial z}=-\rho\frac{\partial \Phi}{\partial z}\approx-\rho\Omega_{\rm K}^2z.
+\end{equation}
+If we assume the disk is isothermal in the vertical direction, the solution is 
+\begin{equation}
+\rho(R, z)=\rho_0(R)\exp\left(-\frac{z^2}{2H^2}\right),
+\end{equation}
+with $H=c_s/\Omega_{\rm K}$.
+
+Define following variables
+\begin{equation}
+\Sigma=\int\rho\rd z, ~~~W=\int P\rd z,
+\end{equation}
+we get the mass accretion rate
+\begin{equation}
+ \dot M=-2\pi R\Sigma v_r={\rm const.}
+\end{equation}
+The radial component of the momentum equation is 
+\begin{equation}
+v_r\frac{\rd v_r}{\rd R}+\frac{1}{\Sigma}\frac{\rd W}{\rd R}=
+\frac{\ell^2-\ell_{\rm K}^2}{R^3}-\frac{W}{\Sigma}\frac{\rd\ln\Omega_{\rm K}}{\rd R}.
+\end{equation}
+The azimuthal component of the momentum equation is
+\begin{equation}
+\dot M(\ell-\ell_{\rm in})=-2\pi R^2 T_{r\phi}.
+\end{equation}
+
+We present the thermal dynamical relations (\citealt{Kato2008})
+\begin{equation}
+\rho T \rd s=\frac{1}{\Gamma_3-1}\left(\rd P -\Gamma_1\frac{P}{\rho}\rd \rho\right),
+\end{equation}
+where 
+\begin{equation}
+\Gamma_1=\beta + \frac{(\gamma-1)(4-3\beta)^2}{\beta + 12(\gamma-1)(1-\beta)},~~~~
+\Gamma_3=1+\frac{(4-3\beta)(\gamma-1)}{\beta + 12(\gamma-1)(1-\beta)}.
+\end{equation}
+As a result, the left-hand side of the energy equation can be recast as
+\begin{equation}
+ \rho T\left(v_r\frac{\partial s}{\partial R}+v_z\frac{\partial s}{\partial z}\right)
+ =\frac{1}{\Gamma_3-1}\left[v_r\frac{\partial P}{\partial R} + v_z\frac{\partial P}{\partial z}
+ -\Gamma_1\frac{P}{\rho}\left(v_r\frac{\partial \rho}{\partial R} + v_z\frac{\partial \rho}{\partial z}\right)\right].
+\end{equation}
+With help of the continuity equation, 
+\begin{equation}
+\frac{P}{\rho}\left(v_r\frac{\partial \rho}{\partial R} + v_z\frac{\partial \rho}{\partial z}\right)
+=Pv_r+P\frac{\partial v_r}{\partial R} + P \frac{\partial v_z}{\partial z}.
+\end{equation}
+This simplifies the above equation into
+\begin{equation}
+ \rho T\left(v_r\frac{\partial s}{\partial R}+v_z\frac{\partial s}{\partial z}\right)
+ =\frac{\Gamma_1}{\Gamma_3-1}\left[\frac{\partial (Rv_rP)}{R\partial R} +
+ \frac{\partial (v_zP)}{\partial z}\right]
+ -\frac{\Gamma_1-1}{\Gamma_3-1}\left[v_r\frac{\partial P}{\partial R}+v_z\frac{\partial P}{\partial z}\right].
+\end{equation}
+After the vertial integrating, we have 
+\begin{gather}
+\frac{\Gamma_1}{\Gamma_3-1}v_r\Sigma\frac{\rd (W/\Sigma)}{\rd R}
+-\frac{\Gamma_1-1}{\Gamma_3-1}\left[v_r\frac{\rd W}{\rd R}-v_rW\frac{\rd\ln H}{\rd R}\right]\\
+=-\frac{1}{\Gamma_3-1}\frac{\dot M}{2\pi R}\frac{W}{\Sigma}
+\left[\frac{\rd \ln W}{\rd R} -\Gamma_1\frac{\rd \ln \Sigma}{\rd R}+(\Gamma_1-1)\frac{\rd\ln H}{\rd R}\right]\\
+=-\frac{1}{\Gamma_3-1}\frac{\dot M}{2\pi R}\frac{W}{\Sigma}
+\left[\frac{\Gamma_1+1}{2}\frac{\rd \ln W}{\rd R}-
+\frac{3\Gamma_1-1}{2}\frac{\rd \ln \Sigma}{\rd R}
+-(\Gamma_1-1)\frac{\rd\ln\Omega_{\rm K}}{\rd R}\right].
+\end{gather}
+The energy equation is rewritten into
+\begin{equation}
+-\frac{1}{\Gamma_3-1}\frac{\dot M}{2\pi R}\frac{W}{\Sigma}
+\left[\frac{\Gamma_1+1}{2}\frac{\rd \ln W}{\rd R}-
+\frac{3\Gamma_1-1}{2}\frac{\rd \ln \Sigma}{\rd R}
+-(\Gamma_1-1)\frac{\rd\ln\Omega_{\rm K}}{\rd R}\right]
+=RT_{r\phi}\frac{\rd\Omega}{\rd R}-Q_{\rm rad}^-.
+\end{equation}
+It can be further recasted as
+\begin{equation}
+\frac{\dot M}{\Gamma_3-1}\frac{W}{\Sigma}
+\left[\frac{\Gamma_1+1}{2}\frac{\rd \ln W}{\rd R}-
+\frac{3\Gamma_1-1}{2}\frac{\rd \ln \Sigma}{\rd R}
+-(\Gamma_1-1)\frac{\rd\ln\Omega_{\rm K}}{\rd R}\right]
+=\dot M (\ell-\ell_{\rm in})\frac{\rd\Omega}{\rd R}+2\pi R Q_{\rm rad}^-.
+\end{equation}
+
+In a summary, the equation set for the disk is 
+\begin{gather}
+ \dot M=-2\pi R\Sigma v_r={\rm const},\\
+\dot M(\ell-\ell_{\rm in})=-2\pi R^2 T_{r\phi},\\
+v_r\frac{\rd v_r}{\rd R}+\frac{1}{\Sigma}\frac{\rd W}{\rd R}=
+\frac{\ell^2-\ell_{\rm K}^2}{R^3}-\frac{W}{\Sigma}\frac{\rd\ln\Omega_{\rm K}}{\rd R},\\
+\frac{\dot M}{\Gamma_3-1}\frac{W}{\Sigma}
+\left[\frac{\Gamma_1+1}{2}\frac{\rd \ln W}{\rd R}-
+\frac{3\Gamma_1-1}{2}\frac{\rd \ln \Sigma}{\rd R}
+-(\Gamma_1-1)\frac{\rd\ln\Omega_{\rm K}}{\rd R}\right]
+=\dot M (\ell-\ell_{\rm in})\frac{\rd\Omega}{\rd R}+2\pi R Q_{\rm rad}^-.
+\end{gather}
+
+\chapter{Solving the Equations}
+\section{Numerical Scheme}
+We choose $\Sigma$ and $W$ as the independent variables. The shear tensor is
+\begin{equation}
+T_{r\phi}=-\alpha_{\rm eff}W, ~~~\alpha_{\rm eff}=\alpha(P_g/P_t)^\mu.
+\end{equation}
+The derivation of the scale height is 
+\begin{equation}
+\frac{\rd\ln H}{\rd R}=\frac{1}{2}\frac{\rd\ln W}{\rd R}-\frac{1}{2}\frac{\rd\ln\Sigma}{\rd R}
+-\frac{\rd\ln\Omega_{\rm K}}{\rd R}.
+\end{equation}
+The derivation of the radial velocity is
+\begin{equation}
+v_r\frac{\rd v_r}{\rd R}=-\frac{\dot M^2}{4\pi^2 R^2\Sigma^2}\left[\frac{1}{R}+\frac{\rd\ln\Sigma}{\rd R}\right],
+\end{equation}
+and the derivation of the angular velocity is 
+\begin{equation}
+\frac{\rd\Omega}{\rd R}=-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi}{\dot M}\frac{\rd}{\rd R}\left(\alpha_{\rm eff} W\right)
+=-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi\alpha_{\rm eff} W}{\dot M}\frac{\rd}{\rd R}\left[\mu\ln W_g +(1-\mu)\ln W\right].
+\end{equation}
+Using the equation of state, we have 
+\begin{equation}
+W=W_g+W_r=\frac{\Sigma k T_0}{\bar\mu m_H} + \frac{2H}{3}aT_0^4,
+\end{equation}
+and
+\begin{equation}
+\frac{\rd W}{\rd R}=W_g\frac{\rd \ln\Sigma}{\rd R} + W_g\frac{\rd\ln T_0}{\rd R}
++4W_g\frac{\rd\ln T_0}{\rd R} + W_r\frac{\rd \ln H}{\rd R}.
+\end{equation}
+Thie yields
+\begin{gather}
+\frac{\rd\ln T_0}{\rd R}=\frac{1}{4-3\beta}\left[\frac{\rd\ln W}{\rd R}
+-\beta\frac{\rd\ln\Sigma}{\rd R} - (1-\beta)\frac{\rd \ln H}{\rd R}\right]\\
+=\frac{1}{4-3\beta}\left[\frac{\beta +1}{2}\frac{\rd\ln W}{\rd R}
++\frac{1-3\beta}{2}\frac{\rd\ln\Sigma}{\rd R}+ (1-\beta)\frac{\rd \ln \Omega_{\rm K}}{\rd R}\right],
+\end{gather}
+and 
+\begin{gather}
+\frac{\rd \ln W_g}{\rd R}=\frac{1}{\beta}\frac{\rd\ln W}{\rd R} - \frac{1-\beta}{\beta}\frac{\rd\ln W_r}{\rd R}
+=\frac{1}{\beta}\frac{\rd\ln W}{\rd R} - \frac{1-\beta}{\beta}\left(\frac{\rd\ln H}{\rd R}+4\frac{\rd\ln T_0}{\rd R}\right)\\
+=\frac{1+\beta}{2(4-3\beta)}\frac{\rd\ln W}{\rd R}
++\frac{9(1-\beta)}{2(4-3\beta)}\frac{\rd\ln \Sigma}{\rd R}
++\frac{1-\beta}{(4-3\beta)}\frac{\rd\ln \Omega_{\rm K}}{\rd R}.
+\end{gather}
+With above equatuion, we have
+\begin{gather}
+\frac{\rd\Omega}{\rd R}=-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi\alpha_{\rm eff} W}{\dot M}
+\left\{\left[\frac{\mu(1+\beta)}{2(4-3\beta)}+(1-\mu)\right]\frac{\rd\ln W}{\rd R}
++\frac{9\mu(1-\beta)}{2(4-3\beta)}\frac{\rd\ln \Sigma}{\rd R}
++\frac{\mu(1-\beta)}{(4-3\beta)}\frac{\rd\ln \Omega_{\rm K}}{\rd R}
+\right\}.
+\end{gather}
+The radiative cooling is
+\begin{equation}
+Q_{\rm rad}^-=\frac{8c(1-\beta)}{\kappa}\frac{W}{\Sigma H}.
+\end{equation}
+
+With above equations, we have the equation set for numerical solving
+\begin{gather}
+\frac{W}{\Sigma}\frac{\rd\ln W}{\rd R}-\frac{\dot M^2}{4\pi^2R^2\Sigma^2}\frac{\rd\ln\Sigma}{\rd R}
+=\frac{\ell^2-\ell_{\rm K}^2}{R^3}-\frac{W}{\Sigma}\frac{\rd\ln\Omega_{\rm K}}{\rd R}+
+\frac{\dot M^2}{4\pi^2R^3\Sigma^2},\\
+\left\{ \frac{\Gamma_1+1}{2(\Gamma_3-1)}\frac{\dot MW}{\Sigma}
+ -2\pi\alpha_{\rm eff}(\ell-\ell_{\rm in})W\left[\frac{\mu(1+\beta)}{2(4-3\beta)}+(1-\mu)\right]\right\}
+\frac{\rd\ln W}{\rd R}\nonumber\\
+-\left\{ \frac{3\Gamma_1-1}{2(\Gamma_3-1)}\frac{\dot MW}{\Sigma}
++2\pi\alpha_{\rm eff}(\ell-\ell_{\rm in})W\frac{9\mu(1-\beta)}{2(4-3\beta)}\right\}
+\frac{\rd\ln \Sigma}{\rd R}\nonumber\\
+=-\dot M(\ell-\ell_{\rm in})\frac{\ell_{\rm in}}{R^3}+2\pi R Q_{\rm rad}^-
++\left\{\frac{\Gamma_1-1}{\Gamma_3-1}\frac{\dot MW}{\Sigma}
++2\pi\alpha_{\rm eff}(\ell-\ell_{\rm in})W\frac{\mu(1-\beta)}{(4-3\beta)}\right\}
+\frac{\rd\ln \Omega_{\rm K}}{\rd R}
+\end{gather}
+The solutions are
+\begin{gather}
+\frac{\rd\ln W}{\rd R}=\frac{a_{22}c_1-a_{12}c_2}{a_{11}a_{22}-a_{21}a_{12}},\\
+\frac{\rd\ln \Sigma}{\rd R}=\frac{a_{11}c_2-a_{21}c_1}{a_{11}a_{22}-a_{21}a_{12}}.
+\end{gather}
+Once $W$ and $\Sigma$ are obtained, other variabes are calculated as
+\begin{gather}
+\Omega=\frac{\ell_{\rm in}}{R^2}+\frac{2\pi\alpha_{\rm eff}W}{\dot M}, ~~~~
+H\approx\frac{1}{\Omega_{\rm K}}\sqrt{\frac{W}{\Sigma}},~~~~
+W=\frac{\Sigma k T_0}{\bar\mu m_H} + \frac{2H}{3}aT_0^4
+\end{gather}
+
+The transonic point is located where the denominator $\mathscr{D}=a_{11}a_{22}-a_{21}a_{12}=0$. 
+The denominator has a form of 
+\begin{eqnarray}
+\frac{\Sigma}{W\dot M}\mathscr{D}&=&-\frac{W}{\Sigma}
+\left[ \frac{3\Gamma_1-1}{2(\Gamma_3-1)} 
++\frac{4\pi^2\alpha_{\rm eff}^2 R^2 W\Sigma}{\dot M^2} \frac{9\mu(1-\beta)}{2(4-3\beta)}\right]\\
+&&+\frac{\dot M^2}{4\pi^2R^2\Sigma^2}\left\{\frac{\Gamma_1+1}{2(\Gamma_3-1)}
+-\frac{4\pi^2\alpha_{\rm eff}^2 R^2 W\Sigma}{\dot M^2}\left[\frac{\mu(1+\beta)}{2(4-3\beta)}+(1-\mu)\right]\right\}\\
+&=&-c_s^2\left(b_1 + b_2\frac{c_s^2}{v_r^2}\right)
++v_r^2\left(b_3-b_4\frac{c_s^2}{v_r^2}\right)\\
+&=&-v_r^2\left[b_2\left(\frac{c_s^2}{v_r^2}\right)^2 + (b_1+b_4)\frac{c_s^2}{v_r^2} - b_3\right].
+\end{eqnarray}
+The solution is 
+\begin{equation}
+\frac{c_s^2}{v_r^2}=\frac{-(b_1+b_4)+\sqrt{(b_1+b_4)^2+4b_2b_3}}{2b_2}.
+\end{equation}
+where 
+\begin{gather}
+b_1=\frac{3\Gamma_1-1}{2(\Gamma_3-1)},~~~~b_2= \alpha_{\rm eff}^2\frac{9\mu(1-\beta)}{2(4-3\beta)}\\
+b_3=\frac{\Gamma_1+1}{2(\Gamma_3-1)},~~~~b_4= \alpha_{\rm eff}^2\left[\frac{\mu(1+\beta)}{2(4-3\beta)}+(1-\mu)\right]
+\end{gather}
+
+In the calcuations, we adopt the dimensional units
+\begin{gather}
+R: R_g,~~~\ell: R_gc,~~~\Omega:\frac{c}{R_g},~~~\dot M:\dot M_{\rm Edd},~~~\Sigma:\frac{\dot M_{\rm Edd}}{cR_g}\\
+W: \frac{\dot M_{\rm Edd} c}{R_g}, ~~~Q_{\rm rad}^-=\frac{\dot M_{\rm Edd} c^2}{R_g^2}
+\end{gather}
+
+The boundary conditions are set according to \cite{Wang1999}
+\begin{equation}
+\Omega=\frac{\Omega_{\rm K}}{\sqrt{5}},~~~T=1.37\times10^8\left(\frac{\dot m}{16m}\right)^{1/4}
+\left(\frac{10R_g}{R}\right)^{5/8}\left(\frac{0.001}{\alpha_{\rm eff}}\right)^{1/4}{\rm K},
+\end{equation}
+where 
+\begin{equation}
+\Omega_K=\sqrt{\frac{1}{R}\frac{\rd\Phi}{\rd R}}=\frac{c}{R_g}\sqrt{\frac{1}{r}}\frac{1}{r-2}.
+\end{equation}
+
+\section{Dimensionless Equations}
+The variables in dimensionless forms are
+\begin{gather}
+\Omega_K=\frac{1}{r-2}\sqrt{\frac{1}{r}},~~~~~
+\frac{\rd\ln\Omega_{\rm K}}{\rd r}=-\frac{1}{2r}-\frac{1}{r-2}.\\
+W=\frac{\Sigma kT_0}{\bar\mu m_H}\frac{1}{c^2} + \frac{2HaT_0^4}{3}\frac{R_g^2}{\dot M_{\rm Edd}c}.\\
+Q_{\rm rad}^-=\frac{8c(1-\beta)}{\kappa}\frac{W}{\Sigma H}
+\end{gather}
+
+For given $T$ and $\Omega$, we have 
+\begin{equation}
+W_g^\mu W^{\mu}
+\end{equation}
+
+\begin{thebibliography}{99}
+\bibitem[Cao(2009)]{Cao2009} 
+   Cao, X.\ 2009, \mnras, 394, 207 
+\bibitem[Gong et al.(2012)]{Gong2012} 
+   Gong, X.-L., Li, L.-X., \& Ma, R.-Y.\ 2012, \mnras, 420, 1415  
+\bibitem[Coppi \& Blandford(1990)]{Coppi1990} 
+   Coppi, P.~S., \& Blandford, R.~D.\ 1990, \mnras, 245, 453  
+\bibitem[Kato et al.(2008)]{Kato2008}
+   Kato, S., Fukue, J., \& Mineshige, S. 2008, Black Hole Accretion Disks—
+   Towards a New Paradigm (Kyoto: Kyoto Univ. Press)   
+\bibitem[Liu et al.(2002)]{Liu2002} 
+   Liu, B.~F., Mineshige, S., \& Shibata, K.\ 2002, \apjl, 572, L173 
+\bibitem[Merloni(2003)]{Merloni2003} 
+   Merloni, A.\ 2003, \mnras, 341, 1051    
+\bibitem[Narayan \& Yi(1995)]{Narayan1995} 
+   Narayan, R., \& Yi, I.\ 1995, \apj, 452, 710    
+\bibitem[Rybicki \& Lightman(1979)]{Rybicki1979} 
+   Rybicki, G.~B., \& Lightman, A.~P.\ 1979, New York, Wiley-Interscience, 1979     
+\bibitem[Svensson \& Zdziarski(1994)]{Svensson1994}
+   Svensson, R., \& Zdziarski, A.~A.\ 1994, \apj, 436, 599  
+\bibitem[Wang \& Netzer(2003)]{Wang2003} 
+   Wang, J.-M., \& Netzer, H.\ 2003, \aap, 398, 927 
+\bibitem[Wang \& Zhou(1999)]{Wang1999}
+   Wang, J.-M., \& Zhou, Y.-Y.\ 1999, \apj, 516, 420    
+\bibitem[Zycki et al.(1995)]{Zycki1995} 
+   Zycki, P.~T., Collin-Souffrin, S., \& Czerny, B.\ 1995, \mnras, 277, 70 
+\end{thebibliography}
+\end{document}

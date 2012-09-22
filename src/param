@@ -1,0 +1,17 @@
+&SLIM
+alpha=0.1d0,
+mu=1.0d0
+mbh=1.0d8,
+mdot=10.0d0,
+gam=1.666667d0,
+ellin_min=3.0d0,
+ellin_max=4.0d0/
+
+&MESH
+rin=3.0d0,
+rout=1.0d4,
+drstep_min=1.0d-8,
+drstep_max=1.0d-3,
+nnu=100,
+numin=1.0d10
+numax=1.0d22/
