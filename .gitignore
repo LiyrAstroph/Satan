@@ -6,3 +6,4 @@ src/*.dat
 src/*.mod
 doc/*
 !doc/readme.tex
+data/*.dat

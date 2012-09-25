@@ -2,21 +2,21 @@ FC=gfortran -O2
 
 all:diskmain
 
-diskmain: diskmain.f90 const.o diskvars.o disksol.o diskset.o
-	$(FC) -o $@ $+
+diskmain: diskmain.f90 const.mod diskvars.mod disksol.o diskset.o Makefile
+	$(FC) -o $@ $< disksol.o diskset.o
 
-const.o: const.f90
-	$(FC) -c $<
+const.mod: const.f90
+	$(FC) -fsyntax-only $< -o $@
 
-diskvars.o: diskvars.f90
-	$(FC) -c $<
+diskvars.mod: diskvars.f90
+	$(FC) -fsyntax-only $< -o $@
 
-disksol.o: disksol.f90
-	$(FC) -c $<
+disksol.o: disksol.f90 const.mod diskvars.mod
+	$(FC) -c $< -o $@
 
-diskset.o: diskset.f90
-	$(FC) -c $<
+diskset.o: diskset.f90 const.mod diskvars.mod
+	$(FC) -c $< -o $@
 
 
 clean:
-	rm diskmain *.o
+	rm diskmain *.o *.mod

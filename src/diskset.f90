@@ -17,6 +17,11 @@ SUBROUTINE INIT
   read(*,mesh)
   write(10,mesh)
   
+  if(ellin_min.gt.ellin_max)then
+    write(*,*)"Bad initial ellin!"
+    stop
+  end if
+
   Ledd=mbh * 4.0d0*PI*G*Msun*mp*c/sigmaT
   Medd=Ledd/0.1d0/c/c
   Rg=mbh * G*Msun/c/c
@@ -36,35 +41,42 @@ SUBROUTINE BOUNDARY
   use diskvars
   implicit none
   
-  integer(kind=8):: ir
-  real(kind=8):: OmgK, r, ell, hd, W, Wg, Wr, T, Sigp, aT4, Wl
+  integer(kind=8):: ird
+  real(kind=8):: OmgK, rdp, ell, hd, W, Wg, Wr, T, Sigp, aT4
   real(kind=8):: S1, S2, S, F1, F2, F, temp1, heigp
   integer(kind=8):: i, n
   
-  ir=1
-  r=rout
-  OmgK=1.0d0/dsqrt(r)/(r-2.0d0)
-  Omgd(ir)=OmgK/dsqrt(5.0d0)
-  Rd(ir)=r
-  ell=r*r*Omgd(ir)
-  T=1.37d8*(mdot/16.0d0/mbh)**0.25d0 * (10.0d0/r)**(5.0d0/8.0d0) 
+  ird=1
+  rdp=rout
+  OmgK=1.0d0/dsqrt(rdp)/(rdp-2.0d0)
+! solution for S-S disk  
+  Sigp=1.4d5 * alpha**(-0.8d0) * mbh**(0.2d0) * (10.0d0*mdot)**(0.7d0)          &
+      * (rdp/2.0d0)**(-0.75d0) /(Medd/c/Rg)
+  T=6.9d7 * alpha**(-0.2d0) * mbh**(-0.2d0) * (10.0d0*mdot)**0.3d0              &
+      * (rdp/2.0d0)**(-0.75d0) 
   aT4= ab*T**4.0d0/3.0d0 /(Medd*c/Rg/Rg)
-  Wl=mdot*(ell-ellin)/(2.0*PI*alpha*r*r)
+  Wg=Sigp*kb*T/muave/mp /c/c
+  heigp=dsqrt(Wg/sigp)/OmgK
+  Wr=2.0d0*heigp * aT4
+  W=Wr+Wg
+  ell=ellin + 2.0*PI*alpha*rdp*rdp *W
   
   write(*,*)T
 !========================================================================
 ! initial guess
-  Wg=Wl
-  Sigp=Wg*muave*mp/(kb*T) * c*c
-  heigp=dsqrt(Wg/sigp)/OmgK
-  Wr=2.0d0*heigp * aT4
-  W=Wr+Wg
+!  Wg=Wl
+!  Sigp=Wg*muave*mp/(kb*T) * c*c
+!  heigp=dsqrt(Wg/sigp)/OmgK
+!  Wr=2.0d0*heigp * aT4
+!  W=Wr+Wg
 !==========================================================================  
-  Td(ir)=T
-  Sigd(ir)=Sigp
-  Wgd(ir)=Wg
-  Wtd(ir)=W
-  Heigd(ir)=Heigp
-  Wrd(ir)=Wr
-  write(*,*)Heigd(ir), Wgd(ir), Wrd(ir), Sigp
+  Rd(ird)=rdp
+  Omgd(ird)=ell/rdp/rdp
+  Td(ird)=T
+  Sigd(ird)=Sigp
+  Wgd(ird)=Wg
+  Wtd(ird)=W
+  Heigd(ird)=Heigp
+  Wrd(ird)=Wr
+  write(*,*)Heigd(ird), Wgd(ird), Wrd(ird), Sigp
 END SUBROUTINE BOUNDARY
