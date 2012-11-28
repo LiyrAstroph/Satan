@@ -251,6 +251,30 @@ F_\nu=F_{d,\nu} +(1-\varepsilon) \left(F_{\rm syn, \nu} + F_{\rm br, \nu} + F_{C
 where $\varepsilon$ is the fraction of emissions that are intercepted by the disks. 
 The spectra from Compton scatterings in the coronae is treated according to \cite{Coppi1990}.
 
+For an effectively optically thick disk, we assume that the local spectrum is modified black-body
+\begin{equation}
+I_\nu=\frac{2 B_\nu(T)}{1+\sqrt{1+\kappa_{\rm es}/\kappa_{\rm ff}(\nu)}}
+~~{\rm erg s^{-1} cm^{-2} Hz^{-1} ster^{-1}},
+\end{equation}
+where 
+\begin{equation}
+B_\nu=\frac{2h\nu^3}{c^2}\frac{1}{e^{x}-1},
+\end{equation}
+and
+\begin{gather}
+\kappa_{\rm es}=0.2(1+X),\\
+\kappa_{\rm ff}=0.75\times10^{25}\rho T^{-3.5}x^{-3}(1-e^{-x})(1+X)(X+Y),
+\end{gather}
+where 
+\begin{equation}
+x=\frac{h\nu}{kT}
+\end{equation}
+and the Gaunt factor is taken to equal 1.
+The overall spectrum is calculated be integrating the local spectra over the whole disk
+\begin{equation}
+F_\nu=2\pi\int I_\nu r \rd r.
+\end{equation}
+
 \chapter{Derive the Equations}
 The basic equations are constructed in the cyclindrical coordinates $(R, \phi, z)$.
 The mass conservation gives
@@ -385,7 +409,7 @@ v_r\frac{\rd v_r}{\rd R}=-\frac{\dot M^2}{4\pi^2 R^2\Sigma^2}\left[\frac{1}{R}+\
 \end{equation}
 and the derivation of the angular velocity is 
 \begin{equation}
-\frac{\rd\Omega}{\rd R}=-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi}{\dot M}\frac{\rd}{\rd R}\left(\alpha_{\rm eff} W\right)
+\frac{\rd\Omega}{\rd R}=-2\frac{\ell_{\rm in}}{R^3}+\frac{2\pi}{\dot M}\frac{\rd}{\rd R}\left(\alpha_{\rm eff} W\right)
 =-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi\alpha_{\rm eff} W}{\dot M}\frac{\rd}{\rd R}\left[\mu\ln W_g +(1-\mu)\ln W\right].
 \end{equation}
 Using the equation of state, we have 
@@ -414,7 +438,7 @@ and
 \end{gather}
 With above equatuion, we have
 \begin{gather}
-\frac{\rd\Omega}{\rd R}=-\frac{\ell_{\rm in}}{R^3}+\frac{2\pi\alpha_{\rm eff} W}{\dot M}
+\frac{\rd\Omega}{\rd R}=-2\frac{\ell_{\rm in}}{R^3}+\frac{2\pi\alpha_{\rm eff} W}{\dot M}
 \left\{\left[\frac{\mu(1+\beta)}{2(4-3\beta)}+(1-\mu)\right]\frac{\rd\ln W}{\rd R}
 +\frac{9\mu(1-\beta)}{2(4-3\beta)}\frac{\rd\ln \Sigma}{\rd R}
 +\frac{\mu(1-\beta)}{(4-3\beta)}\frac{\rd\ln \Omega_{\rm K}}{\rd R}
@@ -436,7 +460,7 @@ With above equations, we have the equation set for numerical solving
 -\left\{ \frac{3\Gamma_1-1}{2(\Gamma_3-1)}\frac{\dot MW}{\Sigma}
 +2\pi\alpha_{\rm eff}(\ell-\ell_{\rm in})W\frac{9\mu(1-\beta)}{2(4-3\beta)}\right\}
 \frac{\rd\ln \Sigma}{\rd R}\nonumber\\
-=-\dot M(\ell-\ell_{\rm in})\frac{\ell_{\rm in}}{R^3}+2\pi R Q_{\rm rad}^-
+=-2\dot M(\ell-\ell_{\rm in})\frac{\ell_{\rm in}}{R^3}+2\pi R Q_{\rm rad}^-
 +\left\{\frac{\Gamma_1-1}{\Gamma_3-1}\frac{\dot MW}{\Sigma}
 +2\pi\alpha_{\rm eff}(\ell-\ell_{\rm in})W\frac{\mu(1-\beta)}{(4-3\beta)}\right\}
 \frac{\rd\ln \Omega_{\rm K}}{\rd R}
@@ -499,11 +523,6 @@ The variables in dimensionless forms are
 W=\frac{\Sigma kT_0}{\bar\mu m_H}\frac{1}{c^2} + \frac{2HaT_0^4}{3}\frac{R_g^2}{\dot M_{\rm Edd}c}.\\
 Q_{\rm rad}^-=\frac{8c(1-\beta)}{\kappa}\frac{W}{\Sigma H}
 \end{gather}
-
-For given $T$ and $\Omega$, we have 
-\begin{equation}
-W_g^\mu W^{\mu}
-\end{equation}
 
 \begin{thebibliography}{99}
 \bibitem[Cao(2009)]{Cao2009} 

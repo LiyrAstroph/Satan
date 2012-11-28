@@ -116,6 +116,7 @@ SUBROUTINE SOLVE
       do i=1,2
       k5(i)=hstep*df(i)
       end do 
+
 ! rk step 6
 
       x=x0+a6*hstep
@@ -136,8 +137,6 @@ SUBROUTINE SOLVE
       
       df0(1)=y1/hstep
       df0(2)=y2/hstep
-           
-      write(30,*)rdp, df0(1),df0(2)
 
       yerr1=dc1*k1(1)+dc3*k3(1)+dc4*k4(1)+dc5*k5(1)+dc6*k6(1)                      
       yerr2=dc1*k1(2)+dc3*k3(2)+dc4*k4(2)+dc5*k5(2)+dc6*k6(2)
@@ -180,7 +179,7 @@ SUBROUTINE SOLVE
          cs=dsqrt(Wtd(ird)/Sigd(ird))
          vr2cs=vr/cs/factor
          !if(mod(ird, 1000).eq.0)write(*,*)ird, rdp
-         write(12,*)Rd(ird), Wtd(ird), Sigd(ird), vr2cs
+         !write(12,*)Rd(ird), Wtd(ird), Sigd(ird), vr2cs
          
          !if(vr2cs.gt.0.95d0.and.vr2cs.lt.1.05d0)then
          if(vr2cs.gt.0.97d0.and.vr2cs.lt.1.03d0)then
@@ -220,7 +219,7 @@ SUBROUTINE SOLVE
   write(*,*)"End!", ird, rdp,ddf
   call output
   call diskspec
-  call corsolve
+!  call corsolve
 END SUBROUTINE SOLVE
 
 SUBROUTINE DERIVA(df,rdp,wtp,sigp)
@@ -288,7 +287,7 @@ FUNCTION GETTEMP(rdp, wtp, sigp)
   use diskvars
   implicit none
   real(kind=8) gettemp, rdp, wtp, sigp
-  real(kind=8) fun, Tp, dfun, OmgK, heigp
+  real(kind=8) fun, Tp, Tpold, dfun, OmgK, heigp
   integer(kind=8) nloop
 
   OmgK=1.0d0/dsqrt(rdp) / (rdp-2.0d0)
@@ -296,18 +295,20 @@ FUNCTION GETTEMP(rdp, wtp, sigp)
 !=================================================
 ! solve for wg and wr  
   fun=1.0d10
-  Tp= ( wtp * 3.0d0 / 2.0d0 /heigp/ab * (Medd*c/Rg/Rg) )**0.25d0
+  Tpold= ( wtp * 3.0d0 / 2.0d0 /heigp/ab * (Medd*c/Rg/Rg) )**0.25d0
   nloop=0
-  do while (dabs(fun).gt.eps)
+  do while (dabs((Tp-Tpold)/Tp).gt.eps*0.001)
+  Tp=Tpold
   fun= (sigp * kb*Tp/muave/mp /c/c + 2.0d0*heigp/3.0d0 * ab * Tp**4.0d0 / (Medd*c/Rg/Rg)) / wtp -1.0d0
   dfun = (sigp*kb/muave/mp  /c/c + 8.0d0*heigp/3.0d0 * ab * Tp**3.0d0 / (Medd*c/Rg/Rg) ) / wtp
-  Tp=Tp - 0.1*fun/dfun
+  Tpold=Tp - 0.2*fun/dfun
   nloop=nloop+1
-  if(nloop.gt.1000)then
+  if(nloop.gt.10000000)then
     write(*,*)"nloop=10000!", Tp, fun
     exit
   end if
   enddo 
+!  write(*,*)fun, Tp, Tpold
   gettemp=Tp  
 END FUNCTION GETTEMP
 
@@ -343,7 +344,6 @@ SUBROUTINE VRCAL(rdp, wtp, sigp, factor)
   factor=(-(b1+b4)+dsqrt((b1+b4)**2.0d0+4.0d0*b2*b3))/2.0d0/b2
   endif
   factor=1.0d0/dsqrt(factor)
-!  write(*,*)factor, b1, b2, aleff
 !================================================= 
 END SUBROUTINE VRCAL
 
@@ -404,7 +404,7 @@ SUBROUTINE OUTPUT
   
   Td(ird)=Tp
   Heigd(ird)=heigp
-  Wgd(ird)=sigp * kb*Tp/muave/mp /c/c
+  Wgd(ird)=sigp * kb*Tp/muave/mp /c/c 
   Wrd(ird)=2.0d0*heigp/3.0d0 * ab * Tp**4.0d0 / (Medd*c/Rg/Rg)
   Teffd(ird)=teffp
   Omgd(ird)=omgp
@@ -426,6 +426,7 @@ SUBROUTINE OUTPUT
   write(14, *) rdp, sigp*Medd/c/Rg, Tp, teffp, vr, omgp/Omgk, heigp, beta, aleff, Qcor, Qadv, &
 !      12                       13   14    15
        Qrad/(Medd*c*c/Rg/Rg), Qvis, tau, Pbase, 0.5d0*Wtp/heigp
+  write(50,*)rdp, wtp, sigp*kb*Tp/muave/mp/c/c + 2*heigp*ab*Tp**4.0/3.0d0/ (Medd*c/Rg/Rg)
   end if
   enddo
   close(14)

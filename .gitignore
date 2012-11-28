@@ -7,3 +7,4 @@ src/*.mod
 doc/*
 !doc/readme.tex
 data/*.dat
+data/*
