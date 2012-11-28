@@ -1,9 +1,10 @@
-FC=gfortran -O2
+FC=gfortran -O2 -Wall -m64
 
-all:diskmain
+all:diskmain speccal
 
-diskmain: diskmain.f90 const.mod diskvars.mod disksol.o diskset.o Makefile
-	$(FC) -o $@ $< disksol.o diskset.o
+diskmain: diskmain.f90 const.mod diskvars.mod disksol.o diskset.o diskrad.o diskcor.o specfun.o \
+	newton.o Makefile
+	$(FC) -o $@ $< disksol.o diskset.o diskrad.o diskcor.o specfun.o newton.o
 
 const.mod: const.f90
 	$(FC) -fsyntax-only $< -o $@
@@ -17,6 +18,26 @@ disksol.o: disksol.f90 const.mod diskvars.mod
 diskset.o: diskset.f90 const.mod diskvars.mod
 	$(FC) -c $< -o $@
 
+diskrad.o: diskrad.f90 const.mod diskvars.mod
+	$(FC) -c $< -o $@
+
+diskcor.o: diskcor.f90 const.mod diskvars.mod
+	$(FC) -c $< -o $@
+
+newton.o: newton.f90 const.mod diskvars.mod
+	$(FC) -c $< -o $@
+
+specfun.o: specfun.f90
+	$(FC) -c $< -o $@
+
+speccal: speccal.f90 speccomp.o specvars.mod specfun.o
+	$(FC) -o $@ $< speccomp.o specfun.o
+
+specvars.mod: specvars.f90
+	$(FC) -fsyntax-only $< -o $@
+
+speccomp.o: speccomp.f90 specvars.mod
+	$(FC) -c $< -o $@
 
 clean:
 	rm diskmain *.o *.mod

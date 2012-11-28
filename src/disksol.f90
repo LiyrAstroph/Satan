@@ -34,10 +34,9 @@ SUBROUTINE SOLVE
   real(kind=8) hstep, rdp, sigp, wtp, df(2), df0(2), vr, cs, vr2cs, factor,  &
       ddf
   integer(kind=8) ird, irdi, irde, ird0, i, ns
-  logical istrs, flag
+  logical istrs
 
   istrs=.false.
-  flag=.false.
 
 20  irdi=1
   irde=nd
@@ -61,7 +60,7 @@ SUBROUTINE SOLVE
       y10=dlog(wtp)
       y20=dlog(sigp)     
        
-      call deriva(df,rdp,wtp,sigp,ird0) 
+      call deriva(df,rdp,wtp,sigp) 
            
       do i=1,2
       k1(i)=hstep*df(i)
@@ -75,7 +74,7 @@ SUBROUTINE SOLVE
       wtp=dexp(y1)
       sigp=dexp(y2)
       
-      call deriva(df,rdp,wtp,sigp,ird0) 
+      call deriva(df,rdp,wtp,sigp) 
       do i=1,2
       k2(i)=hstep*df(i)
       end do      
@@ -87,7 +86,7 @@ SUBROUTINE SOLVE
       rdp=dexp(x)
       wtp=dexp(y1)
       sigp=dexp(y2)
-      call deriva(df,rdp,wtp,sigp,ird0)  
+      call deriva(df,rdp,wtp,sigp)  
       do i=1,2
       k3(i)=hstep*df(i)
       end do 
@@ -100,7 +99,7 @@ SUBROUTINE SOLVE
       rdp=dexp(x)
       wtp=dexp(y1)
       sigp=dexp(y2)
-      call deriva(df,rdp,wtp,sigp,ird0) 
+      call deriva(df,rdp,wtp,sigp) 
       do i=1,2
       k4(i)=hstep*df(i)
       end do 
@@ -113,7 +112,7 @@ SUBROUTINE SOLVE
       rdp=dexp(x)
       wtp=dexp(y1)
       sigp=dexp(y2)
-      call deriva(df,rdp,wtp,sigp,ird0) 
+      call deriva(df,rdp,wtp,sigp) 
       do i=1,2
       k5(i)=hstep*df(i)
       end do 
@@ -127,7 +126,7 @@ SUBROUTINE SOLVE
       wtp=dexp(y1)
       sigp=dexp(y2)
       
-      call deriva(df,rdp,wtp,sigp,ird0) 
+      call deriva(df,rdp,wtp,sigp) 
       do i=1,2
       k6(i)=hstep*df(i)
       end do 
@@ -138,7 +137,8 @@ SUBROUTINE SOLVE
       df0(1)=y1/hstep
       df0(2)=y2/hstep
            
-!      write(90,*)y1,y2,y3      
+      write(30,*)rdp, df0(1),df0(2)
+
       yerr1=dc1*k1(1)+dc3*k3(1)+dc4*k4(1)+dc5*k5(1)+dc6*k6(1)                      
       yerr2=dc1*k1(2)+dc3*k3(2)+dc4*k4(2)+dc5*k5(2)+dc6*k6(2)
       
@@ -173,19 +173,21 @@ SUBROUTINE SOLVE
          Sigd(ird)=Sigd(ird0)*dexp(y2)
          dWtd(ird)=df0(1)
          dSigd(ird)=df0(2)
-
+         
+!         write(30,*)dWtd(ird), dSigd(ird), hstep
          call VRCAL(rdp, wtp, sigp, factor)
          vr=mdot/(2.0*PI*rdp*Sigd(ird))
          cs=dsqrt(Wtd(ird)/Sigd(ird))
          vr2cs=vr/cs/factor
          !if(mod(ird, 1000).eq.0)write(*,*)ird, rdp
-         if(flag)write(12,*)Rd(ird), Wtd(ird), Sigd(ird), vr2cs
+         write(12,*)Rd(ird), Wtd(ird), Sigd(ird), vr2cs
          
-         if(vr2cs.gt.0.95d0.and.vr2cs.lt.1.05d0)then
+         !if(vr2cs.gt.0.95d0.and.vr2cs.lt.1.05d0)then
+         if(vr2cs.gt.0.97d0.and.vr2cs.lt.1.03d0)then
            ns=ird0
            istrs=.true.
-           call crossonic(ird0,df0,-1.0d-1)
-           rdp=rd(ird0)*dexp(-1.0d-1)
+           call crossonic(ird0,df0,-5.0d-2)
+           rdp=rd(ird0)*dexp(-5.0d-2)
            write(*,*)'Transonic!', rdp, vr2cs
          endif
          
@@ -217,17 +219,18 @@ SUBROUTINE SOLVE
 80  nt=ird-1
   write(*,*)"End!", ird, rdp,ddf
   call output
+  call diskspec
+  call corsolve
 END SUBROUTINE SOLVE
 
-SUBROUTINE DERIVA(df,rdp,wtp,sigp,ird0)
+SUBROUTINE DERIVA(df,rdp,wtp,sigp)
   use const
   use diskvars 
   implicit none
   real(kind=8) df(2),rdp,sigp,wtp
-  integer(kind=8) ird0
   
   real(kind=8), external::gettemp
-  real(kind=8)::a11, a12, a21, a22, c1, c2, wgp, wrp, Tp, fun, dfun, heigp,         &
+  real(kind=8)::a11, a12, a21, a22, c1, c2, wgp, wrp, Tp, heigp,                    &
       OmgK, beta, gam1, gam3, aleff, Qrad, kappa, rhop, ell, ellk, dOmgk,           &
       temp1, temp2, Qcor, Pm, va, Bm
   
@@ -249,8 +252,9 @@ SUBROUTINE DERIVA(df,rdp,wtp,sigp,ird0)
   Qrad=8.0d0*c*(1.0d0-beta)* (wtp/sigp/heigp)/kappa  * Rg/Medd
   ell=ellin + 2.0d0*PI*aleff*wtp*rdp*rdp/mdot
 
-!  Pm=betam*dsqrt(wgp*wtp)/2.0d0/heigp
-  Pm=betam*wtp/2.0d0/heigp
+  Pm=betam*dsqrt(wgp*wtp)/2.0d0/heigp
+!  Pm=betam*wtp/2.0d0/heigp
+!  Pm=betam*wgp/2.0d0/heigp
   Bm=dsqrt(8.0d0*PI*Pm)
   va=Bm/dsqrt(4.0d0*PI*rhop)
   Qcor=Pm*va
@@ -265,16 +269,18 @@ SUBROUTINE DERIVA(df,rdp,wtp,sigp,ird0)
       +(2.0d0*PI*aleff*rdp*wtp)**2.0d0 * (9.0d0*mu*(1.0d0-beta)/2.0d0/(4.0d0-3.0d0*beta)) 
   a22=-a22
   
+
   c1=(ell*ell-ellk*ellk)/rdp**3.0d0  - wtp/sigp * dOmgK + mdot*mdot/(4.0d0*PI*PI*rdp**3.0d0 * sigp*sigp)
   
-  temp1=-mdot*(ell-ellin)*ellin/rdp**3.0d0 + 2.0*PI*rdp*(Qrad+Qcor-epsilon*(1.0d0-ar)*Qcor)   
+  temp1=-(2.0d0*PI*aleff*wtp*rdp*rdp)*2.0*ellin/rdp**3.0d0 + 2.0*PI*rdp*(Qrad+Qcor-epsilon*(1.0d0-ar)*Qcor)   
   temp2= (gam1-1.0d0)/(gam3-1.0d0)*mdot*wtp/sigp                                         & 
        + (2.0d0*PI*aleff*rdp*wtp)**2.0d0/mdot * mu *(1.0d0-beta)/(4.0d0-3.0d0*beta)
-  c2=temp1 + temp2*dOmgK
   
+  c2=temp1 + temp2*dOmgK
+
   df(1)=(a22*c1-a12*c2)/(a11*a22-a12*a21) * rdp
   df(2)=(a11*c2-a21*c1)/(a11*a22-a12*a21) * rdp
-
+!  write(34, *) rdp, a11*c2-a21*c1,  a11*a22, a12*a21
 END SUBROUTINE DERIVA
 
 FUNCTION GETTEMP(rdp, wtp, sigp)
@@ -293,12 +299,12 @@ FUNCTION GETTEMP(rdp, wtp, sigp)
   Tp= ( wtp * 3.0d0 / 2.0d0 /heigp/ab * (Medd*c/Rg/Rg) )**0.25d0
   nloop=0
   do while (dabs(fun).gt.eps)
-  fun= sigp * kb*Tp/muave/mp /c/c + 2.0d0*heigp/3.0d0 * ab * Tp**4.0d0 / (Medd*c/Rg/Rg) - wtp
-  dfun = sigp*kb/muave/mp  /c/c + 8.0d0*heigp/3.0d0 * ab * Tp**3.0d0 / (Medd*c/Rg/Rg)
-  Tp=Tp - fun/dfun
+  fun= (sigp * kb*Tp/muave/mp /c/c + 2.0d0*heigp/3.0d0 * ab * Tp**4.0d0 / (Medd*c/Rg/Rg)) / wtp -1.0d0
+  dfun = (sigp*kb/muave/mp  /c/c + 8.0d0*heigp/3.0d0 * ab * Tp**3.0d0 / (Medd*c/Rg/Rg) ) / wtp
+  Tp=Tp - 0.1*fun/dfun
   nloop=nloop+1
   if(nloop.gt.1000)then
-!    write(*,*)"nloop=10000!", Tp, fun
+    write(*,*)"nloop=10000!", Tp, fun
     exit
   end if
   enddo 
@@ -313,7 +319,7 @@ SUBROUTINE VRCAL(rdp, wtp, sigp, factor)
   real(kind=8) rdp, wtp, sigp, factor
   
   real(kind=8), external::gettemp
-  real(kind=8) OmgK, heigp, fun, dfun, Tp, wgp, beta, aleff, gam1, gam3,   &
+  real(kind=8) OmgK, heigp, Tp, wgp, beta, aleff, gam1, gam3,   &
          b1, b2, b3, b4
   
   OmgK=1.0d0/dsqrt(rdp) / (rdp-2.0d0)
@@ -349,12 +355,13 @@ SUBROUTINE OUTPUT
   
   real(kind=8), external::gettemp
   real(kind=8) rdp, wtp, sigp
-  real(kind=8) OmgK, heigp, fun, dfun, Tp, wgp, beta, aleff, gam1, gam3,   &
+  real(kind=8) OmgK, heigp, Tp, wgp, beta, aleff, gam1, gam3,              &
          Qrad, kappa, rhop, teffp, omgp, Pm, Bm, va, Qcor, dOmg, dwtp,     &
          dsigp, temp1, temp2, temp3, dOmgk, Qvis, Qadv, tau, vr, vphi,     &
-         Fd, Pbase
-  
-  do ird=2, nt, 4
+         Fd, Pbase, fcor, qcort, qvist, qradt
+  open(unit=14, file='../data/disk.dat')
+
+  do ird=1, nt, 1
   rdp=Rd(ird)
   sigp=Sigd(ird)
   wtp=Wtd(ird)
@@ -378,8 +385,9 @@ SUBROUTINE OUTPUT
   omgp=2.0d0*PI*aleff*wtp/mdot + ellin/rdp/rdp
   tau=kappa*(rhop*heigp*Medd/c/Rg)
   
-!  Pm=betam*dsqrt(wgp*wtp)/2.0d0/heigp
-  Pm=betam*wtp/2.0d0/heigp
+  Pm=betam*dsqrt(wgp*wtp)/2.0d0/heigp
+!  Pm=betam*wtp/2.0d0/heigp
+!  Pm=betam*wgp/2.0d0/heigp
   Bm=dsqrt(Pm*8.0d0*PI)
   va=Bm/dsqrt(4.0d0*PI*rhop)
   Qcor=Pm*va
@@ -387,7 +395,7 @@ SUBROUTINE OUTPUT
   temp1=(mu*(1.0d0+beta)/2.0d0/(4.0d0-3.0d0*beta) + (1.0d0-mu))
   temp2=(9.0d0*mu*(1.0d0-beta)/2.0d0/(4.0d0-3.0d0*beta)) 
   temp3=(mu*(1.0d0-beta)/(4.0d0-3.0d0*beta))
-  dOmg=-ellin/rdp/rdp/rdp + 2.0d0*PI*aleff*wtp/mdot * (temp1*dwtp/rdp + temp2*dsigp/rdp + temp3*dOmgk)
+  dOmg=-2.0*ellin/rdp/rdp/rdp + 2.0d0*PI*aleff*wtp/mdot * (temp1*dwtp/rdp + temp2*dsigp/rdp + temp3*dOmgk)
   Qvis=-aleff*wtp*rdp*dOmg
   Qadv=Qvis-Qrad/(Medd*c*c/Rg/Rg) - (Qcor-epsilon*(1.0d0-ar)*Qcor)
 
@@ -398,18 +406,44 @@ SUBROUTINE OUTPUT
   Heigd(ird)=heigp
   Wgd(ird)=sigp * kb*Tp/muave/mp /c/c
   Wrd(ird)=2.0d0*heigp/3.0d0 * ab * Tp**4.0d0 / (Medd*c/Rg/Rg)
-  Teff(ird)=teffp
+  Teffd(ird)=teffp
   Omgd(ird)=omgp
+  Qcord(ird)=Qcor
+  Qvisd(ird)=Qvis
 
 ! corona
   Fd=0.5d0*Qrad/(Medd*c*c/Rg/Rg)
-  Pbase=Fd/Ximin/beta
+  Pbase=Fd/0.1
+!  Pbase=0.5d0*Wtp/heigp/tau
+  if((Pbase.gt.0.5d0*Wtp/heigp).and.rdp.lt.1.0d3)then
+    Pbase=0.5d0*Wtp/heigp
+    write(*,*)"Pbase gt Pd", rdp
+  end if
+  Pbased(ird)=Pbase
 
+  if(mod(ird, 100).eq.0)then
 !               1         2          3    4     5      6        7     8      9      10   11        
-  write(14, *) rdp, sigp*Medd/c/Rg, Tp, teffp, vr, omgp/Omgk, heigp, beta, aleff, Qcor, Qadv,  &
-!               12              13   14
-       Qrad/(Medd*c*c/Rg/Rg), Qvis, tau, Pbase
+  write(14, *) rdp, sigp*Medd/c/Rg, Tp, teffp, vr, omgp/Omgk, heigp, beta, aleff, Qcor, Qadv, &
+!      12                       13   14    15
+       Qrad/(Medd*c*c/Rg/Rg), Qvis, tau, Pbase, 0.5d0*Wtp/heigp
+  end if
   enddo
+  close(14)
+
+  qcort=0.0d0
+  qvist=0.0d0
+  qradt=0.0d0
+  do ird=2, nt
+    rdp=Rd(ird)
+    if(rdp.ge.6.0d0)then
+    qcort=qcort + Qcord(ird)*rdp*(Rd(ird)-Rd(ird-1))
+    qvist=qvist + Qvisd(ird)*rdp*(Rd(ird)-Rd(ird-1))
+    qradt=qradt + 2.0d0*sigmab*Teffd(ird)**4.0d0/(Medd*c*c/Rg/Rg) *rdp*(Rd(ird)-Rd(ird-1)) 
+    endif
+  end do
+  fcor=qcort/qvist
+  write(*,*)mdot, fcor, qcort/qradt
+
 END SUBROUTINE OUTPUT
 
 
@@ -419,8 +453,8 @@ subroutine crossonic(ird0,df,hstep)
   implicit none
   integer(kind=8) ird0
   real(kind=8) df(2),hstep
-  integer(kind=8) j,ird
-  real(kind=8) y1,y2,y3,rdp
+  integer(kind=8) ird
+  real(kind=8) y1,y2,rdp
       
   y1=df(1)*hstep
   y2=df(2)*hstep
