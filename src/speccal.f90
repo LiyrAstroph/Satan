@@ -13,6 +13,7 @@ PROGRAM MAIN
   implicit none
   call specset
   call speccal
+  call phindex
 END PROGRAM MAIN
 
 SUBROUTINE SPECSET

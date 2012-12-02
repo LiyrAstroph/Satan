@@ -103,7 +103,7 @@ SUBROUTINE mnewt(ntrial,x,n,tolx,tolf)
         errx=0.
         do 13 i=1,n
           errx=errx+dabs(p(i))
-          x(i)=x(i)+1.0d-2*p(i)
+          x(i)=x(i)+1.0d-3*p(i)
           x(i)=max(x(i), 1.0d6)
 !          write(*,'(I6, e15.7)')k, x(i)
 13      continue

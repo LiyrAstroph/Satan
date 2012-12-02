@@ -30,13 +30,16 @@ newton.o: newton.f90 const.mod diskvars.mod
 specfun.o: specfun.f90
 	$(FC) -c $< -o $@
 
-speccal: speccal.f90 speccomp.o specvars.mod specfun.o
-	$(FC) -o $@ $< speccomp.o specfun.o
+speccal: speccal.f90 speccomp.o specvars.mod specfun.o phindex.o
+	$(FC) -o $@ $< speccomp.o specfun.o phindex.o
 
 specvars.mod: specvars.f90
 	$(FC) -fsyntax-only $< -o $@
 
 speccomp.o: speccomp.f90 specvars.mod
+	$(FC) -c $< -o $@
+
+phindex.o: phindex.f90 specvars.mod const.mod
 	$(FC) -c $< -o $@
 
 clean:

@@ -58,7 +58,7 @@ SUBROUTINE CORSOLVE
 !    tecp=1.0d10/rdp
 !    ticp=3.0d11/rdp
     Pcp=pcp
-    if(tecp.gt.1.0d7)then
+    if(tecp.gt.1.0d6)then
     rhocp=Pcp*mp/(kb*(tecp/mue + ticp/mui)) *c*c
     hcp=dsqrt(Pcp/rhocp)/OmgK
     else

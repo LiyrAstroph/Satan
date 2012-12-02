@@ -14,4 +14,5 @@ MODULE CONST
           h=6.6262d-27, PI=2.0d0*dacos(0.0d0)
   real(kind=8), parameter:: mpc2=mp*c**2,mec2=me*c**2    
   real(kind=8), parameter:: mui=1.23, mue=1.14
+  real(kind=8), parameter:: ev2Hz=2.4179696d14
 END MODULE CONST

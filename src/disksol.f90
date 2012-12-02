@@ -50,7 +50,6 @@ SUBROUTINE SOLVE
   do ird=irdi, irde, 1
     if(rdp.le.rin)exit
     ird0=ird-1
-   
 ! rk step 1
 40    rdp=Rd(ird0)
       sigp=Sigd(ird0)
@@ -219,7 +218,7 @@ SUBROUTINE SOLVE
   write(*,*)"End!", ird, rdp,ddf
   call output
   call diskspec
-!  call corsolve
+  if(betam.gt.0.0d0)call corsolve
 END SUBROUTINE SOLVE
 
 SUBROUTINE DERIVA(df,rdp,wtp,sigp)
@@ -353,12 +352,12 @@ SUBROUTINE OUTPUT
   implicit none
   integer(kind=8) ird
   
-  real(kind=8), external::gettemp
+  real(kind=8), external::gettemp, inverfc
   real(kind=8) rdp, wtp, sigp
   real(kind=8) OmgK, heigp, Tp, wgp, beta, aleff, gam1, gam3,              &
          Qrad, kappa, rhop, teffp, omgp, Pm, Bm, va, Qcor, dOmg, dwtp,     &
          dsigp, temp1, temp2, temp3, dOmgk, Qvis, Qadv, tau, vr, vphi,     &
-         Fd, Pbase, fcor, qcort, qvist, qradt
+         Fd, Pbase, fcor, qcort, qvist, qradt, hc
   open(unit=14, file='../data/disk.dat')
 
   do ird=1, nt, 1
@@ -413,8 +412,11 @@ SUBROUTINE OUTPUT
 
 ! corona
   Fd=0.5d0*Qrad/(Medd*c*c/Rg/Rg)
-  Pbase=Fd/0.1
-!  Pbase=0.5d0*Wtp/heigp/tau
+  Pbase=Fd/0.0005
+!  Pbase=Wtp/heigp/dsqrt(tau)
+!  hc=inverfc(12.5/tau/dsqrt(PI/2.0d0))
+!  Pbase=Wtp/heigp/2.0*dexp(-hc*hc)
+!  write(88,*)Fd/0.00005, 0.5d0*Wtp/heigp/dsqrt(tau)
   if((Pbase.gt.0.5d0*Wtp/heigp).and.rdp.lt.1.0d3)then
     Pbase=0.5d0*Wtp/heigp
     write(*,*)"Pbase gt Pd", rdp
