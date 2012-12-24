@@ -4,11 +4,11 @@ mu=0.0d0,
 mbh=1.0d7,
 mdot=0.5d0,
 gam=1.666667d0,
-betam=0.5d0,
+betam=0.0d0,
 epsilon=0.5d0
 ar=0.15d0
-ellin_min=3.6741845d0,
-ellin_max=3.6741845d0/
+ellin_min=3.6d0,
+ellin_max=3.7d0/
 
 &MESH
 rin=3.0d0,

@@ -184,7 +184,8 @@ SUBROUTINE SOLVE
          if(vr2cs.gt.0.97d0.and.vr2cs.lt.1.03d0)then
            ns=ird0
            istrs=.true.
-           call crossonic(ird0,df0,-5.0d-2)
+           !call crossonic(ird0,df0,-5.0d-2)
+           call crossonic2(ird0, -5.0d-2)
            rdp=rd(ird0)*dexp(-5.0d-2)
            write(*,*)'Transonic!', rdp, vr2cs
          endif
@@ -359,7 +360,6 @@ SUBROUTINE OUTPUT
          dsigp, temp1, temp2, temp3, dOmgk, Qvis, Qadv, tau, vr, vphi,     &
          Fd, Pbase, fcor, qcort, qvist, qradt, hc
   open(unit=14, file='../data/disk.dat')
-
   do ird=1, nt, 1
   rdp=Rd(ird)
   sigp=Sigd(ird)
@@ -411,6 +411,8 @@ SUBROUTINE OUTPUT
   Qvisd(ird)=Qvis
 
 ! corona
+  Pbase=0.0d0
+  if(betam.gt.0.0d0)then
   Fd=0.5d0*Qrad/(Medd*c*c/Rg/Rg)
   Pbase=Fd/0.0005
 !  Pbase=Wtp/heigp/dsqrt(tau)
@@ -421,6 +423,8 @@ SUBROUTINE OUTPUT
     Pbase=0.5d0*Wtp/heigp
     write(*,*)"Pbase gt Pd", rdp
   end if
+  endif
+
   Pbased(ird)=Pbase
 
   if(mod(ird, 100).eq.0)then
@@ -469,3 +473,37 @@ subroutine crossonic(ird0,df,hstep)
   Wtd(ird)=Wtd(ird0)*dexp(y1)      
   Sigd(ird)=Sigd(ird0)*dexp(y2)    
 end subroutine crossonic
+
+subroutine crossonic2(ird0, hstep)
+  use const
+  use diskvars
+  implicit none
+  integer(kind=8) ird0
+  real(kind=8) hstep
+  integer(kind=8) ird, id
+  real(kind=8) rdp, x, y, dy, xd(6), yd(6)
+
+  id=ird0-1
+  ird=ird0+1
+
+  xd=dlog(rd(id:ird0))
+  rdp=rd(ird0)*dexp(hstep)
+  x=dlog(rdp)
+
+  Rd(ird)=rdp
+
+  yd=dlog(Wtd(id:ird0))
+  call polint(xd, yd, 2, x, y, dy)
+  Wtd(ird)=dexp(y)
+
+  yd=dlog(Sigd(id:ird0))
+  call polint(xd, yd, 2, x, y, dy)
+  Sigd(ird)=dexp(y)
+  return
+end subroutine crossonic2
+
+
+
+
+
+
