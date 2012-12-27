@@ -218,8 +218,7 @@ SUBROUTINE SOLVE
 80  nt=ird-1
   write(*,*)"End!", ird, rdp,ddf
   call output
-  call diskspec
-  if(betam.gt.0.0d0)call corsolve
+  
 END SUBROUTINE SOLVE
 
 SUBROUTINE DERIVA(df,rdp,wtp,sigp)
@@ -358,7 +357,7 @@ SUBROUTINE OUTPUT
   real(kind=8) OmgK, heigp, Tp, wgp, beta, aleff, gam1, gam3,              &
          Qrad, kappa, rhop, teffp, omgp, Pm, Bm, va, Qcor, dOmg, dwtp,     &
          dsigp, temp1, temp2, temp3, dOmgk, Qvis, Qadv, tau, vr, vphi,     &
-         Fd, Pbase, fcor, qcort, qvist, qradt, hc
+         Fd, Pbase, fcor, qcort, qvist, qradt, hc, taueff
   open(unit=14, file='../data/disk.dat')
   do ird=1, nt, 1
   rdp=Rd(ird)
@@ -383,7 +382,8 @@ SUBROUTINE OUTPUT
   teffp=(0.5d0*Qrad/sigmab)**0.25d0
   omgp=2.0d0*PI*aleff*wtp/mdot + ellin/rdp/rdp
   tau=kappa*(rhop*heigp*Medd/c/Rg)
-  
+  taueff=dsqrt(kappa * (kappa-0.4d0)) * (rhop*heigp*Medd/c/Rg)
+
   Pm=betam*dsqrt(wgp*wtp)/2.0d0/heigp
 !  Pm=betam*wtp/2.0d0/heigp
 !  Pm=betam*wgp/2.0d0/heigp
@@ -431,7 +431,7 @@ SUBROUTINE OUTPUT
 !               1         2          3    4     5      6        7     8      9      10   11        
   write(14, *) rdp, sigp*Medd/c/Rg, Tp, teffp, vr, omgp/Omgk, heigp, beta, aleff, Qcor, Qadv, &
 !      12                       13   14    15
-       Qrad/(Medd*c*c/Rg/Rg), Qvis, tau, Pbase, 0.5d0*Wtp/heigp
+       Qrad/(Medd*c*c/Rg/Rg), Qvis, tau, taueff, Pbase, 0.5d0*Wtp/heigp
   write(50,*)rdp, wtp, sigp*kb*Tp/muave/mp/c/c + 2*heigp*ab*Tp**4.0/3.0d0/ (Medd*c/Rg/Rg)
   end if
   enddo

@@ -261,26 +261,43 @@ The spectra from Compton scatterings in the coronae is treated according to \cit
 
 For an effectively optically thick disk, we assume that the local spectrum is modified black-body
 \begin{equation}
-I_\nu=\frac{2 B_\nu(T)}{1+\sqrt{1+\kappa_{\rm es}/\kappa_{\rm ff}(\nu)}}
+I_\nu=B_\nu(T_s)f_\nu(T_s)
 ~~{\rm erg s^{-1} cm^{-2} Hz^{-1} ster^{-1}},
 \end{equation}
 where 
 \begin{equation}
 B_\nu=\frac{2h\nu^3}{c^2}\frac{1}{e^{x}-1},
 \end{equation}
-and
+and $f_\nu$ describes the departure from blackbody radiation, 
 \begin{gather}
-\kappa_{\rm es}=0.2(1+X),\\
-\kappa_{\rm ff}=0.75\times10^{25}\rho T^{-3.5}x^{-3}(1-e^{-x})(1+X)(X+Y),
+f_\nu(T_s)=f_{\rm ff}(1-f_{\rm th}) +C,\\
+f_{\rm ff}=\frac{2(1-e^{-2\tau_{\rm eff}})}{1+\sqrt{1+\kappa_{\rm es}/\kappa_{\rm ff}(\nu)}},\\
+f_{\rm th}=\exp\left[-\frac{\ln(kT_s/h\nu)}{\tau_{\nu*}^2\ln(1+\Xi_e+\Xi_e^2)}\right],
 \end{gather}
-where 
+where
+\begin{gather}
+\Xi_e=\frac{4kT_s}{m_ec^2},~~~~x=\frac{h\nu}{kT_s}\\
+\kappa_{\rm es}=0.2(1+X),\\
+\kappa_{\rm ff}=0.75\times10^{25}\rho T_s^{-3.5}x^{-3}(1-e^{-x})(1+X)(X+Y),
+\end{gather}
+where $T_s$ is the surface temperature, and the Gaunt factor is taken to equal 1.
+The surface temperature is determined by equaling 
 \begin{equation}
-x=\frac{h\nu}{kT}
+\int \pi I_\nu\rd\nu=Q_{\rm rad}.
 \end{equation}
-and the Gaunt factor is taken to equal 1.
+
+
+
 The overall spectrum is calculated be integrating the local spectra over the whole disk
 \begin{equation}
 F_\nu=2\pi\int I_\nu r \rd r.
+\end{equation}
+
+When the effective optical depth is small, the radiation diffusion approximation breaks down.
+We adopt a bridged formula
+\begin{equation}
+Q_{\rm rad}=\frac{2\sigma T_0^4}{3(\tau_{\rm es}+\tau_{\rm abs})}
+\frac{(1-e^{-\tau_{\rm eff}})A\tau_{\rm eff}}{e^{-\tau_{\rm eff}}+(1-e^{-\tau_{\rm eff}})A\tau_{\rm eff}}
 \end{equation}
 
 \chapter{Derive the Equations}

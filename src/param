@@ -1,13 +1,13 @@
 &SLIM
 alpha=0.1d0,
 mu=0.0d0,
-mbh=1.0d7,
-mdot=0.5d0,
+mbh=1.0d8,
+mdot=0.1d0,
 gam=1.666667d0,
 betam=0.0d0,
 epsilon=0.5d0
 ar=0.15d0
-ellin_min=3.6d0,
+ellin_min=3.0d0,
 ellin_max=3.7d0/
 
 &MESH
@@ -15,6 +15,6 @@ rin=3.0d0,
 rout=1.0d4,
 drstep_min=1.0d-10,
 drstep_max=1.0d-4,
-nnu=100,
+nnu=200,
 numin=1.0d10
-numax=1.0d18/
+numax=1.0d19/
